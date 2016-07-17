@@ -8,11 +8,48 @@
 
 #include "BufferStream.hpp"
 
+#include <cassert>
+
 namespace Buffers
 {
-	BufferStream::BufferStream(const Buffer & buffer)
+	ByteStreamBuffer::ByteStreamBuffer(const Byte * begin, const Byte * end) : _begin(begin), _end(end), _current(_begin)
 	{
-		std::streambuf::setg(buffer.begin(), buffer.begin(), buffer.end());
+		assert(_begin <= _end);
+	}
+
+	ByteStreamBuffer::int_type ByteStreamBuffer::underflow()
+	{
+		if (_current == _end)
+			return traits_type::eof();
+
+		return traits_type::to_int_type(*_current);
+	}
+
+	ByteStreamBuffer::int_type ByteStreamBuffer::uflow()
+	{
+		if (_current == _end)
+			return traits_type::eof();
+
+		return traits_type::to_int_type(*_current++);
+	}
+
+	ByteStreamBuffer::int_type ByteStreamBuffer::pbackfail(int_type ch)
+	{
+		if (_current == _begin || (ch != traits_type::eof() && ch != _current[-1]))
+			return traits_type::eof();
+
+		return traits_type::to_int_type(*--_current);
+	}
+
+	std::streamsize ByteStreamBuffer::showmanyc()
+	{
+		assert(_current <= _end);
+
+		return _end - _current;
+	}
+
+	BufferStream::BufferStream(const Buffer & buffer) : ByteStreamBuffer(buffer.begin(), buffer.end()), std::istream(this)
+	{
 	}
 	
 	BufferStream::~BufferStream()

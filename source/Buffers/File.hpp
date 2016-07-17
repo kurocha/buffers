@@ -8,16 +8,20 @@
 
 #pragma once
 
+#include "Buffer.hpp"
+
+#include <string>
+#include <sys/types.h>
+#include <fcntl.h>
+
 namespace Buffers
 {
-	typedef int FileDescriptor;
-	
 	// Opens a file for reading or writing.
 	class File {
 		FileDescriptor _descriptor;
 		
 	public:
-		File(const std::string & path, int flags, mode_t mode);
+		File(const std::string & path, int flags, std::uint16_t mode = 0644);
 		~File();
 		
 		File(const File & other) = delete;
@@ -28,6 +32,6 @@ namespace Buffers
 		
 		FileDescriptor descriptor() const { return _descriptor; }
 		
-		void write(Buffer & buffer);
+		void write(const Buffer & buffer);
 	};
 }

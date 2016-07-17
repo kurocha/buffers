@@ -10,9 +10,13 @@
 
 #include "Endian.hpp"
 
+#include <cstdint>
+#include <iosfwd>
+
 namespace Buffers
 {
 	typedef uint8_t Byte;
+	typedef int FileDescriptor;
 	
 	/// Read-only access to data.
 	class Buffer {
@@ -31,7 +35,7 @@ namespace Buffers
 		{
 			read(offset, sizeof(ObjectT), (Byte *)&value);
 
-			return sizeof(t);
+			return sizeof(ObjectT);
 		}
 
 		template <typename ObjectT>
@@ -45,7 +49,7 @@ namespace Buffers
 		template <typename ObjectT>
 		std::size_t read (std::size_t offset, ObjectT & value, Endian src_type) const
 		{
-			return read(offset, value, src_type, host_endian());
+			return read(offset, value, src_type, HOST_ENDIAN);
 		}
 
 		/// Access data at a particular location. Not range checked.

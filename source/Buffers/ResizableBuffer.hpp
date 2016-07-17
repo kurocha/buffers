@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "MutableBuffer.hpp"
+
 namespace Buffers
 {
 	/// A buffer that can be resized. A resizable buffer may have a capacity >= size.

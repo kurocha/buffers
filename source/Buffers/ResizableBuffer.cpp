@@ -8,6 +8,8 @@
 
 #include "ResizableBuffer.hpp"
 
+#include <cstring>
+
 namespace Buffers
 {
 	ResizableBuffer::~ResizableBuffer()
@@ -23,6 +25,6 @@ namespace Buffers
 	{
 		expand(size);
 
-		memcpy(this->end() - size, data, size);
+		std::memcpy(this->end() - size, data, size);
 	}
 }

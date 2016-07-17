@@ -7,6 +7,15 @@
 //
 
 #include "Buffer.hpp"
+#include "File.hpp"
+
+#include <stdexcept>
+#include <cassert>
+#include <cstring>
+#include <sstream>
+
+#include <sys/types.h>
+#include <unistd.h>
 
 namespace Buffers
 {
@@ -23,14 +32,14 @@ namespace Buffers
 
 	void Buffer::read (std::size_t offset, std::size_t size, Byte * value) const
 	{
-		DREAM_ASSERT(offset+size < = size());
+		assert(offset+size <= this->size());
 		
-		memcpy(value, at(offset), size);
+		std::memcpy(value, at(offset), size);
 	}
 
 	const Byte & Buffer::operator[] (std::size_t offset) const
 	{
-		DREAM_ASSERT(offset <= size());
+		assert(offset <= size());
 		
 		return begin()[offset];
 	}
@@ -55,7 +64,7 @@ namespace Buffers
 	}
 
 	/// Dump the buffer as hex to the given stream.
-	void Buffer::hexdump (std::ostream &) const
+	void Buffer::hexdump (std::ostream & out) const
 	{
 		// http://stahlforce.com/dev/index.php?tool=csc01
 		const Byte * current = begin();
@@ -127,21 +136,17 @@ namespace Buffers
 
 	void Buffer::write_to_file (const std::string & path) const
 	{
-		std::size_t required_size = this->size();
-		
-		mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
-		File file(path, O_WRONLY|O_CREAT, mode);
-		file.allocate(required_size);
-		
+		File file(path, O_WRONLY|O_CREAT);
 
+		file.write(*this);
 	}
 	
-	void Buffer::write_to_stream (FileDescriptor output) const
+	void Buffer::write_to_stream (FileDescriptor file_descriptor) const
 	{
-		int sent = 0;
+		std::size_t sent = 0;
 
 		while (sent < size()) {
-			int result = ::write(file_descriptor, begin() + sent, size() - sent);
+			auto result = ::write(file_descriptor, begin() + sent, size() - sent);
 			
 			if (result < 0) {
 				throw std::system_error(errno, std::system_category(), "write");

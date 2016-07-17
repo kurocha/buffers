@@ -8,16 +8,20 @@
 
 #include "File.hpp"
 
+#include "MappedBuffer.hpp"
+
 // File and memory manipulation
 #include <sys/mman.h>
 #include <sys/fcntl.h>
 #include <unistd.h>
 
+#include <system_error>
+
 namespace Buffers
 {
-	File::File(const std::string & path, int flags, mode_t mode) : File(path.c_str(), flags, mode)
+	File::File(const std::string & path, int flags, mode_t mode)
 	{
-		_descriptor = open(path, flags, mode)
+		_descriptor = open(path.c_str(), flags, mode);
 		
 		if (_descriptor == -1)
 			throw std::system_error(errno, std::system_category(), "open");
@@ -32,25 +36,25 @@ namespace Buffers
 		}
 	}
 	
-	void File::write(Buffer & buffer)
+	void File::write(const Buffer & buffer)
 	{
 		auto required_size = buffer.size();
 		
 		allocate(required_size);
 		
-		MappedBuffer buffer(*this, required_size);
-		buffer.advise(MADV_SEQUENTIAL);
+		MappedBuffer mapped_buffer(*this, required_size);
+		mapped_buffer.advise(MADV_SEQUENTIAL);
 			
-		buffer->assign(*this);
+		mapped_buffer.assign(buffer);
 	}
 	
-#ifdef TARGET_OS_MAC
+#ifdef __APPLE__
 	static int posix_fallocate(int file_descriptor, off_t offset, off_t length)
 	{
 		fstore_t store = {F_ALLOCATECONTIG, F_PEOFPOSMODE, offset, length, 0};
 		
 		// Try to get a continous chunk of disk space
-		int result = fcntl(fd, F_PREALLOCATE, &store);
+		int result = fcntl(file_descriptor, F_PREALLOCATE, &store);
 		
 		if (result != -1) {
 			// OK, perhaps we are too fragmented, allocate non-continuous
@@ -70,15 +74,9 @@ namespace Buffers
 	
 	void File::allocate(std::size_t size) {
 		// posix_fallocate doesn't set errno; it returns an errno.
-		int result = posix_fallocate(file_descriptor, 0, size());
+		int result = posix_fallocate(_descriptor, 0, size);
 		
 		if (result != 0)
 			throw std::system_error(result, std::system_category(), "posix_fallocate");
-	}
-	
-	void* File::map() {
-		auto memory = mmap(0, size(), PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-		if (output_buffer == static_cast<void*>(-1))
-			throw std::system_error(errno, std::system_category(), "mmap");
 	}
 }

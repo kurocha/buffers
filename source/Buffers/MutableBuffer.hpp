@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "Buffer.hpp"
+
 namespace Buffers
 {
 	/// Read/write access to data.
@@ -19,13 +21,14 @@ namespace Buffers
 		using Buffer::begin;
 
 		/// Returns the address of the first byte in the buffer.
+		virtual Byte * begin () = 0;
 		/// Returns the address of the last byte + 1 in the buffer.
 		Byte * end ();
 
 		/// Access data at a particular location. Range checked.
 		Byte * at (std::size_t loc);
 		/// Access data at a particular location. Not range checked.
-		Byte & operator[] (std::size_t idx);
+		Byte & operator[] (std::size_t index);
 
 		/// Copy count copies of value into the buffer at the specified offset.
 		void assign (std::size_t count, const Byte & value, std::size_t offset = 0);

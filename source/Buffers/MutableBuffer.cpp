@@ -8,23 +8,18 @@
 
 #include "MutableBuffer.hpp"
 
+#include <cassert>
+#include <cstring>
+
 namespace Buffers
 {
-	MutableBuffer::MutableBuffer()
-	{
-	}
-	
 	MutableBuffer::~MutableBuffer()
 	{
 	}
-	
-	MutableBuffer::~MutableBuffer ()
-{
-}
 
 	Byte * MutableBuffer::at (std::size_t loc)
 	{
-		DREAM_ASSERT(loc < size());
+		assert(loc < size());
 		return begin() + loc;
 	}
 
@@ -33,23 +28,23 @@ namespace Buffers
 		return begin() + size();
 	}
 
-	Byte & MutableBuffer::operator[] (std::size_t idx)
+	Byte & MutableBuffer::operator[] (std::size_t index)
 	{
-		return begin()[idx];
+		return begin()[index];
 	}
 
 	void MutableBuffer::assign (std::size_t count, const Byte & value, std::size_t offset)
 	{
-		DREAM_ASSERT((count + offset) <= size());
+		assert((count + offset) <= size());
 
-		memset(begin() + offset, value, count);
+		std::memset(begin() + offset, value, count);
 	}
 
 	void MutableBuffer::assign (const Byte * other_begin, const Byte * other_end, std::size_t offset)
 	{
-		DREAM_ASSERT((other_end - other_begin) + offset <= size());
+		assert((other_end - other_begin) + offset <= size());
 
-		memcpy(begin() + offset, other_begin, other_end - other_begin);
+		std::memcpy(begin() + offset, other_begin, other_end - other_begin);
 	}
 
 	void MutableBuffer::assign (const Buffer & other, std::size_t offset)
@@ -64,7 +59,7 @@ namespace Buffers
 
 	void MutableBuffer::assign (const char * string, std::size_t offset)
 	{
-		std::size_t len = strlen(string);
+		std::size_t len = std::strlen(string);
 		assign((const Byte *)string, (const Byte *)string + len, offset);
 	}
 }

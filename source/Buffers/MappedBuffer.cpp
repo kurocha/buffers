@@ -8,14 +8,18 @@
 
 #include "MappedBuffer.hpp"
 
+#include <system_error>
+
 namespace Buffers
 {
-	MappedBuffer::MappedBuffer(const File & file, void * address, std::size_t length, int protection, int flags, off_t offset) : _length(length)
+	MappedBuffer::MappedBuffer(const File & file, std::size_t length, void * address, int protection, int flags, off_t offset) : _data(nullptr), _length(length)
 	{
-		_data = mmap(address, length, protection, flags, file.descriptor(), offset);
+		auto result = mmap(address, length, protection, flags, file.descriptor(), offset);
 		
-		if (_data == MAP_FAILED)
+		if (result == MAP_FAILED)
 			throw std::system_error(errno, std::system_category(), "mmap");
+
+		_data = static_cast<Byte*>(result);
 	}
 	
 	MappedBuffer::~MappedBuffer()

@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include "ResizableBuffer.hpp"
+
 namespace Buffers
 {
 	/// A flexible read/write buffer class that can be resized.
