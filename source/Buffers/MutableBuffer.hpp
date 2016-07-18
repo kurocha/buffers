@@ -10,6 +10,8 @@
 
 #include "Buffer.hpp"
 
+#include <string>
+
 namespace Buffers
 {
 	/// Read/write access to data.
@@ -26,7 +28,7 @@ namespace Buffers
 		Byte * end ();
 
 		/// Access data at a particular location. Range checked.
-		Byte * at (std::size_t loc);
+		Byte * at (std::size_t index);
 		/// Access data at a particular location. Not range checked.
 		Byte & operator[] (std::size_t index);
 
@@ -40,6 +42,8 @@ namespace Buffers
 		void assign (const Buffer & other, std::size_t other_offset, std::size_t other_size, std::size_t offset = 0);
 		/// Copy a c-style string into the buffer
 		void assign (const char * string, std::size_t offset = 0);
+		/// Copy a C++ style string into the buffer.
+		void assign(const std::string string, std::size_t offset = 0);
 
 		/// Write a specific value into the buffer at the specified offset.
 		template <typename AnyT>

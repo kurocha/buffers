@@ -41,6 +41,7 @@ define_target "buffers-tests" do |target|
 	end
 	
 	target.depends "Library/UnitTest"
+	target.depends "Library/Buffers"
 	
 	target.provides "Test/Buffers"
 end

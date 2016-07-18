@@ -29,7 +29,7 @@ namespace Buffers
 		virtual std::size_t size() const { return _length; }
 		
 	private:
-		std::size_t _length;
-		Byte * _data;
+		std::size_t _length = 0;
+		Byte * _data = nullptr;
 	};
 }

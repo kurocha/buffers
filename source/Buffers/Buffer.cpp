@@ -155,4 +155,10 @@ namespace Buffers
 			sent += result;
 		}
 	}
+	
+	std::ostream & operator<< (std::ostream & out, const Buffer & buffer) {
+		out.write(reinterpret_cast<const std::ostream::char_type *>(buffer.begin()), buffer.size());
+		
+		return out;
+	}
 }

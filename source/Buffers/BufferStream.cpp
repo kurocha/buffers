@@ -12,6 +12,8 @@
 
 namespace Buffers
 {
+	// Explaination of how this fits together: http://www.mr-edd.co.uk/blog/beginners_guide_streambuf
+
 	ByteStreamBuffer::ByteStreamBuffer(const Byte * begin, const Byte * end) : _begin(begin), _end(end), _current(_begin)
 	{
 		assert(_begin <= _end);

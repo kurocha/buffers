@@ -85,4 +85,6 @@ namespace Buffers
 		/// Write the contents of the buffer to the specified file descriptor.
 		void write_to_stream (FileDescriptor output) const;
 	};
+	
+	std::ostream & operator<< (std::ostream & out, const Buffer & buffer);
 }
