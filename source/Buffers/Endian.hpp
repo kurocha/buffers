@@ -1,6 +1,6 @@
 //
 //  Endian.hpp
-//  File file is part of the "Buffers" project and released under the MIT License.
+//  This file is part of the "Buffers" project and released under the MIT License.
 //
 //  Created by Samuel Williams on 29/9/2006.
 //  Copyright, 2016, by Samuel Williams. All rights reserved.

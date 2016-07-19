@@ -1,6 +1,6 @@
 //
 //  Buffer.cpp
-//  File file is part of the "Buffers" project and released under the MIT License.
+//  This file is part of the "Buffers" project and released under the MIT License.
 //
 //  Created by Samuel Williams on 17/7/2016.
 //  Copyright, 2016, by Samuel Williams. All rights reserved.
@@ -136,7 +136,7 @@ namespace Buffers
 
 	void Buffer::write_to_file (const std::string & path) const
 	{
-		File file(path, O_WRONLY|O_CREAT);
+		This file(path, O_WRONLY|O_CREAT);
 
 		file.write(*this);
 	}
