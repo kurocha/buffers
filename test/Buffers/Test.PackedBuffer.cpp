@@ -22,15 +22,15 @@ namespace Buffers
 				std::string sample_string = "Packed buffer.";
 
 				PackedBuffer * buffer = PackedBuffer::new_buffer(sample_string.size());
-				examiner << "Buffer was created successfully";
+				examiner << "Buffer was created successfully." << std::endl;
 				examiner.expect(buffer) != nullptr;
 				
-				examiner << "Buffer has correct size";
+				examiner << "Buffer has correct size." << std::endl;
 				examiner.expect(buffer->size()) == sample_string.size();
 
 				buffer->assign(sample_string);
 
-				examiner << "Data is correct";
+				examiner << "Data is correct." << std::endl;
 				for (std::size_t i = 0; i < buffer->size(); i += 1) {
 					examiner.check(buffer->at(i) == sample_string.at(i));
 				}
@@ -49,12 +49,12 @@ namespace Buffers
 				
 				File tmp_file(tmp_path, O_RDONLY);
 				
-				examiner << "File size is same as sample data size";
+				examiner << "File size is same as sample data size." << std::endl;
 				examiner.expect(tmp_file.size()) == sample_data.size();
 				
 				MappedBuffer read_buffer(tmp_file, tmp_file.size());
 				
-				examiner << "Data is consistent";
+				examiner << "Data is consistent." << std::endl;
 				examiner.expect(*write_buffer) == read_buffer;
 			}
 		}

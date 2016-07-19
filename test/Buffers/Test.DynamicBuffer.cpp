@@ -19,25 +19,25 @@ namespace Buffers
 			[](UnitTest::Examiner & examiner) {
 				DynamicBuffer a(100), b, c(100, true);
 
-				examiner << "Size set by constructor";
+				examiner << "Size set by constructor." << std::endl;
 				examiner.check(a.size() == 100);
-				examiner << "Size set by constructor";
+				examiner << "Size set by constructor." << std::endl;
 				examiner.check(b.size() == 0);
-				examiner << "Size set by constructor";
+				examiner << "Size set by constructor." << std::endl;
 				examiner.check(c.size() == 0);
 
-				examiner << "Sized construtor is not empty";
+				examiner << "Sized construtor is not empty." << std::endl;
 				examiner.check(!a.empty());
-				examiner << "Default construtor is empty";
+				examiner << "Default construtor is empty." << std::endl;
 				examiner.check(b.empty());
-				examiner << "Reserved construtor is empty";
+				examiner << "Reserved construtor is empty." << std::endl;
 				examiner.check(c.empty());
 
-				examiner << "Capacity >= size";
+				examiner << "Capacity >= size." << std::endl;
 				examiner.check(a.capacity() >= a.size());
-				examiner << "Capacity >= size";
+				examiner << "Capacity >= size." << std::endl;
 				examiner.check(b.capacity() >= b.size());
-				examiner << "Capacity as specified";
+				examiner << "Capacity as specified." << std::endl;
 				examiner.expect(c.capacity()) == 100;
 			}
 		},
@@ -47,21 +47,21 @@ namespace Buffers
 				DynamicBuffer a(100), b;
 				
 				a.reserve(200);
-				examiner << "Reserved capacity for 200 bytes";
+				examiner << "Reserved capacity for 200 bytes." << std::endl;
 				examiner.expect(a.capacity()) == 200;
 
 				b.reserve(400);
-				examiner << "Reserved capacity for 400 bytes";
+				examiner << "Reserved capacity for 400 bytes." << std::endl;
 				examiner.expect(b.capacity()) == 400;
 
 				a.resize(600);
-				examiner << "Resized to specified size";
+				examiner << "Resized to specified size." << std::endl;
 				examiner.expect(a.size()) == 600;
-				examiner << "Capacity increased after size increase";
+				examiner << "Capacity increased after size increase." << std::endl;
 				examiner.expect(a.capacity()) >= 600;
 
 				a.expand(100);
-				examiner << "Expanded size by requested amount";
+				examiner << "Expanded size by requested amount." << std::endl;
 				examiner.expect(a.size()) == 700;
 			}
 		},
@@ -73,10 +73,10 @@ namespace Buffers
 				a.append(5, (const Byte *)"abcde");
 				a.append(5, (const Byte *)"abcde");
 
-				examiner << "Size is correct after appending 10 characters";
+				examiner << "Size is correct after appending 10 characters." << std::endl;
 				examiner.expect(a.size()) == 10;
 				
-				examiner << "Character is correct";
+				examiner << "Character is correct." << std::endl;
 				examiner.expect(a[1]) == 'b';
 			}
 		},
@@ -86,14 +86,14 @@ namespace Buffers
 				DynamicBuffer a(10), b(10);
 				
 				a.clear();
-				examiner << "Cleared buffer is empty";
+				examiner << "Cleared buffer is empty." << std::endl;
 				examiner.check(a.empty());
 
-				examiner << "Buffers are different after being cleared";
+				examiner << "Buffers are different after being cleared." << std::endl;
 				examiner.expect(a) != b;
 
 				b.clear();
-				examiner << "Cleared buffers are equivalent";
+				examiner << "Cleared buffers are equivalent." << std::endl;
 				examiner.expect(a) == b;
 			}
 		},
@@ -109,13 +109,13 @@ namespace Buffers
 				a.assign(sample_string);
 
 				// Performance check
-				examiner << "Don't realloc if size is within capacity";
+				examiner << "Don't realloc if size is within capacity." << std::endl;
 				examiner.expect(a.capacity()) == prev_capacity;
 
 				b.resize(sample_string.size());
 				b.assign(sample_string);
 
-				examiner << "Data and size is the same";
+				examiner << "Data and size is the same." << std::endl;
 				examiner.expect(a) == b;
 			}
 		},

@@ -42,11 +42,11 @@ namespace Buffers
 				{
 					File test_file(test_path, O_RDONLY);
 					
-					examiner << "The test file has the correct size";
+					examiner << "The test file has the correct size." << std::endl;
 					examiner.expect(test_file.size()) == 45;
 					
 					test_file.read([&](Buffer & buffer){
-						examiner << "The test file was written to and read correctly";
+						examiner << "The test file was written to and read correctly." << std::endl;
 						examiner.expect(buffer) == test_data;
 					});
 				}
