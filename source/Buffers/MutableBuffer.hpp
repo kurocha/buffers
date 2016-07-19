@@ -28,7 +28,7 @@ namespace Buffers
 		Byte * end ();
 
 		/// Access data at a particular location. Range checked.
-		Byte * at (std::size_t index);
+		Byte & at (std::size_t index);
 		/// Access data at a particular location. Not range checked.
 		Byte & operator[] (std::size_t index);
 

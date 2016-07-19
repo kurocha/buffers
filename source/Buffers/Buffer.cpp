@@ -23,18 +23,18 @@ namespace Buffers
 	{
 	}
 
-	const Byte * Buffer::at (std::size_t offset) const
+	const Byte Buffer::at (std::size_t offset) const
 	{
 		if (offset > size()) throw std::out_of_range(__func__);
 		
-		return begin() + offset;
+		return begin()[offset];
 	}
 
 	void Buffer::read (std::size_t offset, std::size_t size, Byte * value) const
 	{
 		assert(offset+size <= this->size());
 		
-		std::memcpy(value, at(offset), size);
+		std::memcpy(value, begin() + offset, size);
 	}
 
 	const Byte & Buffer::operator[] (std::size_t offset) const
@@ -136,7 +136,7 @@ namespace Buffers
 
 	void Buffer::write_to_file (const std::string & path) const
 	{
-		This file(path, O_WRONLY|O_CREAT);
+		File file(path, O_CREAT|O_RDWR);
 
 		file.write(*this);
 	}

@@ -24,7 +24,7 @@ namespace Buffers
 		virtual ~Buffer ();
 
 		/// Access data at a particular location. Range checked.
-		const Byte * at (std::size_t offset) const;
+		const Byte at (std::size_t offset) const;
 
 		/// Read data of a given size from the buffer
 		void read (std::size_t offset, std::size_t size, Byte * value) const;

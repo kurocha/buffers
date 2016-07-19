@@ -17,10 +17,10 @@ namespace Buffers
 	{
 	}
 
-	Byte * MutableBuffer::at (std::size_t index)
+	Byte & MutableBuffer::at (std::size_t index)
 	{
 		assert(index < size());
-		return begin() + index;
+		return begin()[index];
 	}
 
 	Byte * MutableBuffer::end ()
