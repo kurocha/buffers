@@ -21,17 +21,24 @@ namespace Buffers
 		FileDescriptor _descriptor;
 		
 	public:
-		File(const std::string & path, int flags, std::uint16_t mode = 0644);
+		File(const std::string & path, int flags = O_RDONLY, std::uint16_t mode = 0644);
 		~File();
 		
 		File(const File & other) = delete;
 		File & operator=(const File &) = delete;
 		
-		/// Allocate space on disk for the given data size.
+		std::size_t size() const;
+		
+		/// Destructively allocate space on disk for the given data size.
 		void allocate(std::size_t size);
 		
 		FileDescriptor descriptor() const { return _descriptor; }
 		
+		/// Write the entire buffer to the file.
 		void write(const Buffer & buffer);
+		
+		/// Read the file in it's entirety and yield to the block with the buffer.
+		template <typename BlockT>
+		void read(BlockT block);
 	};
 }

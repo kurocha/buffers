@@ -18,7 +18,7 @@ namespace Buffers
 	class MappedBuffer : public MutableBuffer
 	{
 	public:
-		MappedBuffer(const File & file, std::size_t length, void * address = 0, int protection = PROT_READ, int flags = MAP_SHARED, off_t offset = 0);
+		MappedBuffer(const File & file, std::size_t length, int protection = PROT_READ, int flags = MAP_SHARED, off_t offset = 0, void * address = 0);
 		virtual ~MappedBuffer();
 		
 		void advise(int advice);
@@ -32,4 +32,12 @@ namespace Buffers
 		std::size_t _length = 0;
 		Byte * _data = nullptr;
 	};
+	
+	template <typename BlockT>
+	void File::read(BlockT block)
+	{
+		MappedBuffer buffer(*this, size());
+		
+		block(buffer);
+	}
 }

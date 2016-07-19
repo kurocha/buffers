@@ -12,7 +12,7 @@
 
 namespace Buffers
 {
-	MappedBuffer::MappedBuffer(const File & file, std::size_t length, void * address, int protection, int flags, off_t offset) : _length(length)
+	MappedBuffer::MappedBuffer(const File & file, std::size_t length, int protection, int flags, off_t offset, void * address) : _length(length)
 	{
 		auto result = mmap(address, length, protection, flags, file.descriptor(), offset);
 		

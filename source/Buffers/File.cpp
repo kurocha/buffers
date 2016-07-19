@@ -11,9 +11,10 @@
 #include "MappedBuffer.hpp"
 
 // File and memory manipulation
-#include <sys/mman.h>
 #include <sys/fcntl.h>
 #include <unistd.h>
+
+#include <iostream>
 
 #include <system_error>
 
@@ -36,15 +37,28 @@ namespace Buffers
 		}
 	}
 	
+	std::size_t File::size() const
+	{
+		auto current_offset = lseek(_descriptor, 0, SEEK_CUR);
+		
+		lseek(_descriptor, 0, SEEK_END);
+		
+		auto size = lseek(_descriptor, 0, SEEK_CUR);
+		
+		lseek(_descriptor, current_offset, SEEK_SET);
+		
+		return size;
+	}
+	
 	void File::write(const Buffer & buffer)
 	{
 		auto required_size = buffer.size();
 		
 		allocate(required_size);
 		
-		MappedBuffer mapped_buffer(*this, required_size);
+		MappedBuffer mapped_buffer(*this, required_size, PROT_WRITE);
 		mapped_buffer.advise(MADV_SEQUENTIAL);
-			
+		
 		mapped_buffer.assign(buffer);
 	}
 	
@@ -56,13 +70,13 @@ namespace Buffers
 		// Try to get a continous chunk of disk space
 		int result = fcntl(file_descriptor, F_PREALLOCATE, &store);
 		
-		if (result != -1) {
+		if (result == -1) {
 			// OK, perhaps we are too fragmented, allocate non-continuous
 			store.fst_flags = F_ALLOCATEALL;
 			result = fcntl(file_descriptor, F_PREALLOCATE, &store);
 			
 			if (result == -1)
-				return -1;
+				return errno;
 		}
 	
 		if (ftruncate(file_descriptor, length) == -1)
