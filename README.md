@@ -6,10 +6,14 @@ This library provides set of light weight C++ classes for dealing with buffers o
 
 ## Installation
 
-Use Teapot to build and install Tagged Format:
+Use [Teapot](http://teapot.nz) to build and install Tagged Format:
 
 	$ sudo gem install teapot
 	$ teapot build Library/Buffers
+
+To run unit tests:
+
+	$ teapot build Test/Buffers
 
 ## Usage
 
