@@ -10,6 +10,8 @@
 #include "File.hpp"
 
 #include <stdexcept>
+#include <system_error>
+
 #include <cassert>
 #include <cstring>
 #include <sstream>

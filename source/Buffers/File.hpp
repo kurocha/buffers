@@ -21,7 +21,7 @@ namespace Buffers
 		FileDescriptor _descriptor;
 		
 	public:
-		File(const std::string & path, int flags = O_RDONLY, std::uint16_t mode = 0644);
+		File(const std::string & path, int flags = O_RDONLY, mode_t mode = 0644);
 		~File();
 		
 		File(const File & other) = delete;
