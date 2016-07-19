@@ -8,6 +8,8 @@
 
 #include "PackedBuffer.hpp"
 
+#include <new>
+
 namespace Buffers
 {
 	PackedBuffer::PackedBuffer (std::size_t size) : _size(size)
@@ -29,7 +31,7 @@ namespace Buffers
 		return reinterpret_cast<const Byte *>(this) + sizeof(*this);
 	}
 
-	PackedBuffer * PackedBuffer::new_buffer (std::size_t size)
+	PackedBuffer * PackedBuffer::allocate (std::size_t size)
 	{
 		std::size_t total_size = sizeof(PackedBuffer) + size;
 		void * data = ::operator new (total_size);

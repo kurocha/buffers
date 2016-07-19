@@ -19,21 +19,19 @@ namespace Buffers
 		
 		{"construct from string",
 			[](UnitTest::Examiner & examiner) {
-				std::string sample_string = "Packed buffer.";
+				StaticBuffer sample_buffer("You might not think that programmers are artists, but programming is an extremely creative profession. It's logic based creativity.");
 
-				PackedBuffer * buffer = PackedBuffer::new_buffer(sample_string.size());
+				PackedBuffer * buffer = PackedBuffer::allocate(sample_buffer.size());
 				examiner << "Buffer was created successfully." << std::endl;
 				examiner.expect(buffer) != nullptr;
 				
 				examiner << "Buffer has correct size." << std::endl;
-				examiner.expect(buffer->size()) == sample_string.size();
+				examiner.expect(buffer->size()) == sample_buffer.size();
 
-				buffer->assign(sample_string);
+				buffer->assign(sample_buffer);
 
 				examiner << "Data is correct." << std::endl;
-				for (std::size_t i = 0; i < buffer->size(); i += 1) {
-					examiner.check(buffer->at(i) == sample_string.at(i));
-				}
+				examiner.expect(*buffer) == sample_buffer;
 			}
 		},
 		
@@ -43,7 +41,7 @@ namespace Buffers
 				
 				std::string tmp_path = "buffer.txt";
 
-				PackedBuffer * write_buffer = PackedBuffer::new_buffer(sample_data.size());
+				PackedBuffer * write_buffer = PackedBuffer::allocate(sample_data.size());
 				write_buffer->assign(sample_data);
 				write_buffer->write_to_file(tmp_path);
 				
@@ -54,7 +52,7 @@ namespace Buffers
 				
 				MappedBuffer read_buffer(tmp_file, tmp_file.size());
 				
-				examiner << "Data is consistent." << std::endl;
+				examiner << "Data is correct." << std::endl;
 				examiner.expect(*write_buffer) == read_buffer;
 			}
 		}

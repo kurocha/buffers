@@ -56,15 +56,4 @@ namespace Buffers
 	{
 		assign(other.begin() + other_offset, other.begin() + other_offset + other_size, offset);
 	}
-
-	void MutableBuffer::assign (const char * string, std::size_t offset)
-	{
-		std::size_t size = std::strlen(string);
-		assign(reinterpret_cast<const Byte *>(string), reinterpret_cast<const Byte *>(string + size), offset);
-	}
-	
-	void MutableBuffer::assign(const std::string string, std::size_t offset)
-	{
-		assign(reinterpret_cast<const Byte *>(string.data()), reinterpret_cast<const Byte *>(string.data() + string.size()), offset);
-	}
 }

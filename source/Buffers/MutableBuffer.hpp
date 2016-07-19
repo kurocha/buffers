@@ -10,8 +10,6 @@
 
 #include "Buffer.hpp"
 
-#include <string>
-
 namespace Buffers
 {
 	/// Read/write access to data.
@@ -40,10 +38,6 @@ namespace Buffers
 		void assign (const Buffer & other, std::size_t offset = 0);
 		/// Copy a slice of data from another buffer
 		void assign (const Buffer & other, std::size_t other_offset, std::size_t other_size, std::size_t offset = 0);
-		/// Copy a c-style string into the buffer
-		void assign (const char * string, std::size_t offset = 0);
-		/// Copy a C++ style string into the buffer.
-		void assign(const std::string string, std::size_t offset = 0);
 
 		/// Write a specific value into the buffer at the specified offset.
 		template <typename AnyT>

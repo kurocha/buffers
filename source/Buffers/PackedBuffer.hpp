@@ -28,7 +28,7 @@ namespace Buffers
 		PackedBuffer & operator=(const PackedBuffer & other) = delete;
 
 		/// Create a new buffer.
-		static PackedBuffer * new_buffer (std::size_t size);
+		static PackedBuffer * allocate (std::size_t size);
 
 		virtual std::size_t size () const;
 

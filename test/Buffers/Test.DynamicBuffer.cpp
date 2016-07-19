@@ -9,6 +9,7 @@
 #include <UnitTest/UnitTest.hpp>
 
 #include <Buffers/DynamicBuffer.hpp>
+#include <Buffers/StaticBuffer.hpp>
 
 namespace Buffers
 {
@@ -100,20 +101,20 @@ namespace Buffers
 		
 		{"it can assign data and resize",
 			[](UnitTest::Examiner & examiner) {
-				std::string sample_string = "Human resources are human first, and resources second.";
+				StaticBuffer sample_buffer("Human resources are human first, and resources second.");
 				
 				DynamicBuffer a(100), b;
 
 				std::size_t prev_capacity = a.capacity();
-				a.resize(sample_string.size());
-				a.assign(sample_string);
+				a.resize(sample_buffer.size());
+				a.assign(sample_buffer);
 
 				// Performance check
 				examiner << "Don't realloc if size is within capacity." << std::endl;
 				examiner.expect(a.capacity()) == prev_capacity;
 
-				b.resize(sample_string.size());
-				b.assign(sample_string);
+				b.resize(sample_buffer.size());
+				b.assign(sample_buffer);
 
 				examiner << "Data and size is the same." << std::endl;
 				examiner.expect(a) == b;
