@@ -46,7 +46,7 @@ define_target "buffers-tests" do |target|
 	target.provides "Test/Buffers"
 end
 
-define_configuration "travis" do |configuration|
+define_configuration "test" do |configuration|
 	configuration[:source] = "http://github.com/kurocha/"
 	
 	configuration.require "platforms"

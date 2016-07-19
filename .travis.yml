@@ -1,0 +1,15 @@
+language: cpp
+sudo: false
+script:
+  - teapot -c test fetch
+  - teapot -c test build Test/Buffers
+compiler: clang
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - libstdc++-4.8-dev
+install:
+  - rvm use 2.3 --install --binary --fuzzy
+  - bundle install
