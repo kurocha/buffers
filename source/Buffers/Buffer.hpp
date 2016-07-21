@@ -21,10 +21,19 @@ namespace Buffers
 	/// Read-only access to data.
 	class Buffer {
 	public:
+		Buffer() = default;
 		virtual ~Buffer ();
+		
+		Buffer(const Buffer & other) = delete;
+		Buffer & operator=(const Buffer & other) = delete;
 
 		/// Access data at a particular location. Range checked.
 		const Byte at (std::size_t offset) const;
+		
+		/// Return a pointer to a given offset within the buffer.
+		const Byte * operator+(std::size_t offset) const {
+			return begin() + offset;
+		}
 
 		/// Read data of a given size from the buffer
 		void read (std::size_t offset, std::size_t size, Byte * value) const;

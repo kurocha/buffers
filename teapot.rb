@@ -29,7 +29,7 @@ define_target "buffers" do |target|
 	target.depends "Build/Clang"
 	
 	target.provides "Library/Buffers" do
-		append linkflags {install_prefix + "lib/libBuffers.a"}
+		append linkflags ->{install_prefix + "lib/libBuffers.a"}
 	end
 end
 

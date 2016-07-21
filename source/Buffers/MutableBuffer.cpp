@@ -8,7 +8,7 @@
 
 #include "MutableBuffer.hpp"
 
-#include <cassert>
+#include <stdexcept>
 #include <cstring>
 
 namespace Buffers
@@ -19,7 +19,8 @@ namespace Buffers
 
 	Byte & MutableBuffer::at (std::size_t index)
 	{
-		assert(index < size());
+		if (index >= size()) throw std::out_of_range("index out of bounds");
+		
 		return begin()[index];
 	}
 
@@ -35,16 +36,20 @@ namespace Buffers
 
 	void MutableBuffer::assign (std::size_t count, const Byte & value, std::size_t offset)
 	{
-		assert((count + offset) <= size());
+		// count is the number of bytes to fill:
+		if (count + offset > size()) throw std::out_of_range("setting bytes will overflow buffer");
 
 		std::memset(begin() + offset, value, count);
 	}
 
 	void MutableBuffer::assign (const Byte * other_begin, const Byte * other_end, std::size_t offset)
 	{
-		assert((other_end - other_begin) + offset <= size());
-
-		std::memcpy(begin() + offset, other_begin, other_end - other_begin);
+		auto other_size = other_end - other_begin;
+		
+		if (offset + other_size > size())
+			throw std::out_of_range("assigning data will overflow buffer");
+		
+		std::memcpy(begin() + offset, other_begin, other_size);
 	}
 
 	void MutableBuffer::assign (const Buffer & other, std::size_t offset)

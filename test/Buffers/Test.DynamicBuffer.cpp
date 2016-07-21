@@ -35,11 +35,11 @@ namespace Buffers
 				examiner.check(c.empty());
 
 				examiner << "Capacity >= size." << std::endl;
-				examiner.check(a.capacity() >= a.size());
+				examiner.expect(a.capacity()) >= a.size();
 				examiner << "Capacity >= size." << std::endl;
-				examiner.check(b.capacity() >= b.size());
+				examiner.expect(b.capacity()) >= b.size();
 				examiner << "Capacity as specified." << std::endl;
-				examiner.expect(c.capacity()) == 100;
+				examiner.expect(c.capacity()) >= 100;
 			}
 		},
 		
@@ -49,11 +49,11 @@ namespace Buffers
 				
 				a.reserve(200);
 				examiner << "Reserved capacity for 200 bytes." << std::endl;
-				examiner.expect(a.capacity()) == 200;
+				examiner.expect(a.capacity()) >= 200;
 
 				b.reserve(400);
 				examiner << "Reserved capacity for 400 bytes." << std::endl;
-				examiner.expect(b.capacity()) == 400;
+				examiner.expect(b.capacity()) >= 400;
 
 				a.resize(600);
 				examiner << "Resized to specified size." << std::endl;

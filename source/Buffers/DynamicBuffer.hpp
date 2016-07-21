@@ -21,10 +21,10 @@ namespace Buffers
 		DynamicBuffer();
 		
 		/// Duplicate an existing buffer:
-		DynamicBuffer(const Buffer &);
+		DynamicBuffer(const DynamicBuffer &) = delete;
 		
 		/// Copy an existing buffer:
-		DynamicBuffer & operator=(const Buffer &);
+		DynamicBuffer & operator=(const DynamicBuffer &) = delete;
 		
 		/// Construct a pre-sized buffer. If reserved is true, the size refers to capacity i.e. equivalent of calling reserve(size).
 		DynamicBuffer (std::size_t size, bool reserved = false);
@@ -46,10 +46,10 @@ namespace Buffers
 		virtual const Byte * begin () const;
 		
 	private:
-		std::size_t _capacity, _size;
-		Byte * _data;
+		std::size_t _capacity = 0, _size = 0;
+		Byte * _data = nullptr;
 		
-		void allocate (std::size_t size);
+		void allocate (std::size_t capacity);
 		void deallocate ();
 	};
 }

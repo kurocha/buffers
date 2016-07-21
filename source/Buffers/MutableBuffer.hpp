@@ -29,6 +29,11 @@ namespace Buffers
 		Byte & at (std::size_t index);
 		/// Access data at a particular location. Not range checked.
 		Byte & operator[] (std::size_t index);
+		
+		/// Return a pointer to a given offset within the buffer.
+		Byte * operator+(std::size_t offset) {
+			return begin() + offset;
+		}
 
 		/// Copy count copies of value into the buffer at the specified offset.
 		void assign (std::size_t count, const Byte & value, std::size_t offset = 0);
@@ -43,8 +48,10 @@ namespace Buffers
 		template <typename AnyT>
 		std::size_t write (const AnyT & value, std::size_t offset)
 		{
-			assign((const Byte *)value, (const Byte *)value + sizeof(AnyT), offset);
-
+			auto data = reinterpret_cast<const Byte *>(&value);
+			
+			assign(data, data + sizeof(AnyT), offset);
+			
 			return offset + sizeof(AnyT);
 		}
 	};
