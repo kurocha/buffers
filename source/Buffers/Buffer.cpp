@@ -53,16 +53,31 @@ namespace Buffers
 
 	bool Buffer::operator== (const Buffer & other) const
 	{
-		if (size() != other.size())
-			return false;
-
-		// If size is the same, check data is the same
-		return bcmp(begin(), other.begin(), size()) == 0;
+		return compare(other) == 0;
 	}
 
 	bool Buffer::operator!= (const Buffer & other) const
 	{
-		return !(*this == other);
+		return compare(other) != 0;
+	}
+	
+	int Buffer::compare(const Buffer & other) const
+	{
+		// If buffers are not the same size, they can't possibly be the same:
+		if (size() < other.size())
+			return -1;
+		
+		if (size() > other.size())
+			return 1;
+
+		// If buffers both point to the same block of data (and are the same size) they are the same:
+		if (begin() == other.begin())
+			return 0;
+
+		if (size() == 0)
+			return 0;
+
+		return std::memcmp(begin(), other.begin(), size());
 	}
 
 	/// Dump the buffer as hex to the given stream.

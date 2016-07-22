@@ -18,6 +18,11 @@ namespace Buffers
 	DynamicBuffer::DynamicBuffer ()
 	{
 	}
+	
+	DynamicBuffer::DynamicBuffer(const Buffer & other) : DynamicBuffer(other.size())
+	{
+		assign(other);
+	}
 
 	DynamicBuffer::DynamicBuffer (std::size_t size, bool reserved)
 	{

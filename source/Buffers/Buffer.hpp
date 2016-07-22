@@ -82,6 +82,8 @@ namespace Buffers
 		/// Tests whether the data in the buffers is different.
 		bool operator!= (const Buffer & other) const;
 
+		int compare(const Buffer & other) const;
+
 		/// Dump the buffer as hex to the given stream.
 		void hexdump (std::ostream &) const;
 

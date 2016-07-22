@@ -19,6 +19,7 @@ namespace Buffers
 	public:
 		/// Construct an empty buffer.
 		DynamicBuffer();
+		explicit DynamicBuffer(const Buffer & other);
 		
 		/// Duplicate an existing buffer:
 		DynamicBuffer(const DynamicBuffer &) = delete;
