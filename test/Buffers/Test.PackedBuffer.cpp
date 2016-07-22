@@ -12,6 +12,8 @@
 #include <Buffers/PackedBuffer.hpp>
 #include <Buffers/StaticBuffer.hpp>
 
+#include <memory>
+
 namespace Buffers
 {
 	UnitTest::Suite PackedBufferTestSuite {
@@ -20,16 +22,16 @@ namespace Buffers
 		{"construct from string",
 			[](UnitTest::Examiner & examiner) {
 				StaticBuffer sample_buffer("You might not think that programmers are artists, but programming is an extremely creative profession. It's logic based creativity.");
-
-				PackedBuffer * buffer = PackedBuffer::allocate(sample_buffer.size());
-				examiner << "Buffer was created successfully." << std::endl;
-				examiner.expect(buffer) != nullptr;
+				
+				std::unique_ptr<PackedBuffer> buffer(
+					PackedBuffer::allocate(sample_buffer.size())
+				);
 				
 				examiner << "Buffer has correct size." << std::endl;
 				examiner.expect(buffer->size()) == sample_buffer.size();
-
+				
 				buffer->assign(sample_buffer);
-
+				
 				examiner << "Data is correct." << std::endl;
 				examiner.expect(*buffer) == sample_buffer;
 			}
@@ -40,8 +42,11 @@ namespace Buffers
 				StaticBuffer sample_data("When the only tool you have is a hammer, you tend to treat everything as if it were a nail.");
 				
 				std::string tmp_path = "buffer.txt";
-
-				PackedBuffer * write_buffer = PackedBuffer::allocate(sample_data.size());
+				
+				std::unique_ptr<PackedBuffer> write_buffer(
+					PackedBuffer::allocate(sample_data.size())
+				);
+				
 				write_buffer->assign(sample_data);
 				write_buffer->write_to_file(tmp_path);
 				
