@@ -31,6 +31,8 @@ namespace Buffers
 
 		/// Appends a set number of bytes to the end of the buffer
 		void append (std::size_t size, const Byte * data);
+		
+		void operator+= (const Buffer & buffer);
 
 		// Helper for appending primitive types.
 		template <typename ObjectT>

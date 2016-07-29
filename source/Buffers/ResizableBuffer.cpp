@@ -20,11 +20,18 @@ namespace Buffers
 	{
 		resize(size() + amount);
 	}
+	
+	void ResizableBuffer::operator+= (const Buffer & buffer)
+	{
+		append(buffer.size(), buffer.begin());
+	}
 
 	void ResizableBuffer::append (std::size_t size, const Byte * data)
 	{
+		auto offset = this->size();
+		
 		expand(size);
 
-		std::memcpy(this->end() - size, data, size);
+		this->assign(data, data+size, offset);
 	}
 }
