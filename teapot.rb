@@ -40,6 +40,8 @@ define_target "buffers-tests" do |target|
 		run tests: "Buffers", source_files: test_root.glob('Buffers/**/*.cpp')
 	end
 	
+	target.depends "Language/C++11", private: true
+	
 	target.depends "Library/UnitTest"
 	target.depends "Library/Buffers"
 	
