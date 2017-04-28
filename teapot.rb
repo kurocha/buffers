@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-teapot_version "1.0"
+teapot_version "1.3"
 
 define_project "Buffers" do |project|
 	project.add_author "Samuel Williams"
@@ -23,7 +23,7 @@ define_target "buffers" do |target|
 	end
 	
 	target.depends :platform
-	target.depends "Language/C++11"
+	target.depends "Language/C++11", private: true
 	
 	target.depends "Build/Files"
 	target.depends "Build/Clang"
