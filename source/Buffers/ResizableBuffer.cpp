@@ -16,9 +16,14 @@ namespace Buffers
 	{
 	}
 	
-	void ResizableBuffer::expand (std::size_t amount)
+	bool ResizableBuffer::expand (std::size_t amount)
 	{
-		resize(size() + amount);
+		return resize(size() + amount);
+	}
+	
+	bool ResizableBuffer::expand ()
+	{
+		return resize(size() * 2);
 	}
 	
 	void ResizableBuffer::operator+= (const Buffer & buffer)
@@ -26,12 +31,14 @@ namespace Buffers
 		append(buffer.size(), buffer.begin());
 	}
 
-	void ResizableBuffer::append (std::size_t size, const Byte * data)
+	bool ResizableBuffer::append (std::size_t size, const Byte * data)
 	{
 		auto offset = this->size();
 		
-		expand(size);
-
+		auto reallocated = expand(size);
+		
 		this->assign(data, data+size, offset);
+		
+		return reallocated;
 	}
 }

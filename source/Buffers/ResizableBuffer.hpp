@@ -21,19 +21,22 @@ namespace Buffers
 		virtual std::size_t capacity () const = 0;
 
 		/// Reserve/allocate more capacity if required. Will release capacity if size is smaller than current capacity.
-		virtual void reserve (std::size_t size) = 0;
+		virtual bool reserve (std::size_t size) = 0;
 
 		/// Change the size of the buffer. Will allocate more capacity if required.
-		virtual void resize (std::size_t size) = 0;
+		virtual bool resize (std::size_t size) = 0;
 
 		/// Increase the size of the buffer by the given size.
-		void expand (std::size_t amount);
-
+		bool expand (std::size_t amount);
+		
+		/// Efficiently increase the size of the buffer by at least one.
+		bool expand ();
+		
 		/// Appends a set number of bytes to the end of the buffer
-		void append (std::size_t size, const Byte * data);
+		bool append (std::size_t size, const Byte * data);
 		
 		void operator+= (const Buffer & buffer);
-
+		
 		// Helper for appending primitive types.
 		template <typename ObjectT>
 		void append (const ObjectT & value)

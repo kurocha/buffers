@@ -53,20 +53,31 @@ namespace Buffers
 		deallocate();
 	}
 
-	void DynamicBuffer::allocate (std::size_t capacity)
+	bool DynamicBuffer::allocate (std::size_t capacity)
 	{
 		if (capacity != _capacity) {
 			//std::cerr << "realloc(" << (void *)_data << ", " << size << ") -> ";
-			_data = (Byte*)realloc(_data, capacity);
+			auto data = (Byte*)realloc(_data, capacity);
 			//std::cerr << (void *)_data << std::endl;
 			
-			if (_data == nullptr)
+			if (data == nullptr) {
 				throw std::bad_alloc();
-
+			}
+			
 			_capacity = capacity;
+			
+			if (_data == data) {
+				// data address was not changed.
+				return false;
+			} else {
+				// data address was changed.
+				_data = data;
+				return true;
+			}
 		}
 		
 		//std::cerr << "done allocate(" << size << ") [capacity=" << _capacity << "]" << std::endl;
+		return false;
 	}
 
 	void DynamicBuffer::deallocate ()
@@ -95,14 +106,19 @@ namespace Buffers
 		deallocate();
 	}
 
-	void DynamicBuffer::reserve (std::size_t size)
+	bool DynamicBuffer::reserve (std::size_t size)
 	{
-		allocate(size);
+		if (size > _capacity) {
+			return allocate(size);
+		} else {
+			return false;
+		}
 	}
 
-	void DynamicBuffer::resize (std::size_t size)
+	bool DynamicBuffer::resize (std::size_t size)
 	{
 		const std::size_t PLATEAU = 1 << 12;
+		bool reallocated = false;
 		
 		//std::cerr << "resize(" << size << ") [capacity=" << _capacity << "]" << std::endl;
 		if (size > _capacity) {
@@ -115,10 +131,12 @@ namespace Buffers
 			
 			if (next_size < size) throw std::runtime_error("could not compute next size");
 			
-			allocate(next_size);
+			reallocated = allocate(next_size);
 		}
-
+		
 		_size = size;
+		
+		return reallocated;
 	}
 
 	Byte * DynamicBuffer::begin ()

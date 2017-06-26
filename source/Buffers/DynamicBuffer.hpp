@@ -40,8 +40,8 @@ namespace Buffers
 		/// Set the size of the buffer to 0. Capacity is not changed.
 		void clear ();
 
-		virtual void reserve (std::size_t size);
-		virtual void resize (std::size_t size);
+		virtual bool reserve (std::size_t size);
+		virtual bool resize (std::size_t size);
 
 		virtual Byte * begin ();
 		virtual const Byte * begin () const;
@@ -50,7 +50,7 @@ namespace Buffers
 		std::size_t _capacity = 0, _size = 0;
 		Byte * _data = nullptr;
 		
-		void allocate (std::size_t capacity);
+		bool allocate (std::size_t capacity);
 		void deallocate ();
 	};
 }
