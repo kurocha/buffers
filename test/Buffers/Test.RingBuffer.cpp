@@ -20,7 +20,7 @@ namespace Buffers
 		{"it can read data from a file",
 			[](UnitTest::Examiner & examiner) {
 				DynamicBuffer storage(1024);
-				File random("/dev/random");
+				File random("/dev/zero");
 				
 				RingBuffer ring_buffer(storage);
 				ring_buffer.read_from(random.descriptor());
@@ -33,7 +33,7 @@ namespace Buffers
 		{"it can read data from a file in chunks",
 			[](UnitTest::Examiner & examiner) {
 				DynamicBuffer storage(1024);
-				File random("/dev/random");
+				File random("/dev/zero");
 				
 				RingBuffer ring_buffer(storage);
 				ring_buffer.read_from(random.descriptor());
