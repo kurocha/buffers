@@ -2,18 +2,19 @@
 
 This library provides set of light weight C++ classes for dealing with buffers of data. It tries to encourage memory safety and efficiency where possible.
 
-[![Build Status](https://secure.travis-ci.org/kurocha/buffers.svg)](http://travis-ci.org/kurocha/buffers)
+[![Build Status](https://travis-ci.org/kurocha/buffers.svg?branch=master)](https://travis-ci.org/kurocha/buffers)
 
-## Installation
+## Setup
 
-Use [Teapot](http://teapot.nz) to build and install Tagged Format:
+Firstly the build tool `teapot` needs to be installed (which requires [Ruby][2]):
 
-	$ sudo gem install teapot
-	$ teapot build Library/Buffers
+	$ gem install teapot
 
-To run unit tests:
+To fetch all dependencies, run:
 
-	$ teapot build Test/Buffers
+	$ teapot fetch
+
+[2]: http://www.ruby-lang.org/en/downloads/
 
 ## Usage
 
@@ -24,6 +25,14 @@ The typical use case to bring data into the library is to use `StaticBuffer` whi
 Reading and writing binary data from disk quickly is an important use-case and is the responsibiltiy of `File` and `MappedBuffer`. It uses `mmap`, `posix_fallocate` and `memcpy` internally to write data to disk efficiently. It uses `mmap` to load data from disk with no copying involved. It's the most efficient way to deal with data.
 
 Finally, work is being done to integrate `MappedBuffer` with zero-copy networking. This is a work in progress.
+
+## Contributing
+
+1. Fork it.
+2. Create your feature branch (`git checkout -b my-new-feature`).
+3. Commit your changes (`git commit -am 'Add some feature'`).
+4. Push to the branch (`git push origin my-new-feature`).
+5. Create new Pull Request.
 
 ## License
 
