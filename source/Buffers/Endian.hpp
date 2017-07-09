@@ -17,9 +17,10 @@ namespace Buffers
 		LITTLE
 	};
 
-#if defined(__LITTLE_ENDIAN__) || defined(i386)
+// gcc prefers __ORDER_LITTLE_ENDIAN__ and __ORDER_BIG_ENDIAN__
+#if defined(__ORDER_LITTLE_ENDIAN__) || defined(__LITTLE_ENDIAN__) || defined(i386)
 	constexpr Endian HOST_ENDIAN = Endian::LITTLE;
-#elif defined(__BIG_ENDIAN__) || defined(ppc)
+#elif defined(__ORDER_BIG_ENDIAN__) || defined(__BIG_ENDIAN__) || defined(ppc)
 	constexpr Endian HOST_ENDIAN = Endian::BIG;
 #endif
 	
