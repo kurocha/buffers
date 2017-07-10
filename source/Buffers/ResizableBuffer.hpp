@@ -19,6 +19,10 @@ namespace Buffers
 
 		/// The currently allocated capacity of the buffer. Can be changed by calling reserve().
 		virtual std::size_t capacity () const = 0;
+		
+		/// The top of the allocated buffer.
+		Byte * top() {return begin() + capacity();}
+		const Byte * top() const {return begin() + capacity();}
 
 		/// Reserve/allocate more capacity if required. Will release capacity if size is smaller than current capacity.
 		virtual bool reserve (std::size_t size) = 0;
