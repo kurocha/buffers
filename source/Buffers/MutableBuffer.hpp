@@ -19,7 +19,8 @@ namespace Buffers
 
 		/// Provide the const version
 		using Buffer::begin;
-
+		using Buffer::end;
+		
 		/// Returns the address of the first byte in the buffer.
 		virtual Byte * begin () = 0;
 		/// Returns the address of the last byte + 1 in the buffer.
