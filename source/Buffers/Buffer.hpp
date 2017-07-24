@@ -74,7 +74,7 @@ namespace Buffers
 		virtual const Byte * begin () const = 0;
 
 		/// Returns the address of the last byte + 1 in the buffer.
-		const Byte * end () const;
+		virtual const Byte * end () const;
 
 		/// Tests whether the data in the buffers is equivalent.
 		bool operator== (const Buffer & other) const;
