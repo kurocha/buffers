@@ -73,14 +73,20 @@ namespace Buffers
 		if (result == -1) {
 			// OK, perhaps we are too fragmented, allocate non-continuous
 			store.fst_flags = F_ALLOCATEALL;
+			
 			result = fcntl(file_descriptor, F_PREALLOCATE, &store);
 			
-			if (result == -1)
-				return errno;
+			if (result == -1) {
+				// APFS doens't seem to support F_PREALLOCATE and always returns EINVAL, so ignore it.
+				if (errno != EINVAL) {
+					return errno;
+				}
+			}
 		}
 	
-		if (ftruncate(file_descriptor, length) == -1)
+		if (ftruncate(file_descriptor, length) == -1) {
 			return errno;
+		}
 		
 		return 0;
 	}

@@ -52,7 +52,7 @@ define_target "buffers-tests" do |target|
 		run tests: "Buffers", source_files: test_root.glob('Buffers/**/*.cpp'), arguments: arguments
 	end
 	
-	target.depends "Language/C++11", private: true
+	target.depends "Language/C++14", private: true
 	
 	target.depends "Library/UnitTest"
 	target.depends "Library/Buffers"
@@ -62,8 +62,8 @@ end
 
 # Configurations
 
-define_configuration "buffers" do |configuration|
-	configuration[:source] = "http://github.com/kurocha/"
+define_configuration "development" do |configuration|
+	configuration[:source] = "https://github.com/kurocha"
 	
 	# Provides all the build related infrastructure:
 	configuration.require "platforms"
@@ -76,4 +76,8 @@ define_configuration "buffers" do |configuration|
 	configuration.require 'generate-project'
 	configuration.require 'generate-travis'
 	configuration.require "generate-cpp-class"
+end
+
+define_configuration "buffers" do |configuration|
+	configuration.public!
 end
