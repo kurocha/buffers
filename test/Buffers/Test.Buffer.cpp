@@ -20,19 +20,23 @@ namespace Buffers
 			[](UnitTest::Examiner & examiner) {
 				StaticBuffer a("abc");
 				StaticBuffer b("abd");
-				DynamicBuffer c(a); // Same data, but copied to a different memory address.
 				
-				examiner << "Compare short string with long string." << std::endl;
 				examiner.expect(a) != b;
 				examiner.expect(a.compare(b)) == -1;
 				examiner.expect(a.compare(a)) == 0;
 				examiner.expect(b.compare(a)) == 1;
+			}
+		},
+		
+		{"it can compare different buffers with the same value",
+			[](UnitTest::Examiner & examiner) {
+				StaticBuffer a("abc");
+				DynamicBuffer b(a); // Same data, but copied to a different memory address.
 				
-				examiner << "Compare same data in different buffers." << std::endl;
-				examiner.expect(a) == c;
-				examiner.expect(c) == a;
-				examiner.expect(a.compare(c)) == 0;
-				examiner.expect(c.compare(a)) == 0;
+				examiner.expect(a) == b;
+				examiner.expect(b) == a;
+				examiner.expect(a.compare(b)) == 0;
+				examiner.expect(b.compare(a)) == 0;
 			}
 		},
 		
@@ -41,7 +45,6 @@ namespace Buffers
 				StaticBuffer a("abc");
 				StaticBuffer b("abcd");
 				
-				examiner << "Compare short string with long string." << std::endl;
 				examiner.expect(a) != b;
 				examiner.expect(a.compare(b)) == -1;
 				examiner.expect(a.compare(a)) == 0;
@@ -49,20 +52,28 @@ namespace Buffers
 			}
 		},
 		
-		{"it can compare empty buffers",
-			[](UnitTest::Examiner & examiner) {
+		{"it can compare empty buffer with non-empty buffer",
+			[](auto examiner) {
 				StaticBuffer a("How you look at it is pretty much how you'll see it.");
-				DynamicBuffer b, c;
+				DynamicBuffer b;
 				
-				examiner << "Comparsion with empty buffer." << std::endl;
 				examiner.expect(a) != b;
 				examiner.expect(b) != a;
 				
 				examiner.expect(a.compare(b)) == 1;
 				examiner.expect(b.compare(a)) == -1;
+			}
+		},
+		
+		{"it can compare empty buffers",
+			[](UnitTest::Examiner & examiner) {
+				DynamicBuffer a, b;
 				
-				examiner << "Comparing two empty buffers." << std::endl;
-				examiner.expect(b) == c;
+				examiner.expect(a) == b;
+				examiner.expect(b) == a;
+				
+				examiner.expect(a.compare(b)) == 0;
+				examiner.expect(b.compare(a)) == 0;
 			}
 		},
 	};
