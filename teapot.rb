@@ -35,9 +35,6 @@ define_target 'buffers-library' do |target|
 	target.depends :platform
 	target.depends "Language/C++11", private: true
 	
-	target.depends "Build/Files"
-	target.depends "Build/Clang"
-	
 	target.provides "Library/Buffers" do
 		append linkflags [
 			->{install_prefix + 'lib/libBuffers.a'},
