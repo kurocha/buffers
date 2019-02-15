@@ -3,7 +3,7 @@
 #  This file is part of the "Teapot" project, and is released under the MIT license.
 #
 
-teapot_version "1.3"
+teapot_version "3.0"
 
 # Project Metadata
 
@@ -21,40 +21,29 @@ end
 # Build Targets
 
 define_target 'buffers-library' do |target|
-	target.build do
-		source_root = target.package.path + 'source'
-		
-		copy headers: source_root.glob('Buffers/**/*.hpp')
-		
-		build static_library: "Buffers", source_files: source_root.glob('Buffers/**/*.cpp')
-	end
-	
-	target.depends 'Build/Files'
-	target.depends 'Build/Clang'
-	
-	target.depends :platform
-	target.depends "Language/C++11", private: true
+	target.depends "Language/C++14"
 	
 	target.provides "Library/Buffers" do
-		append linkflags [
-			->{install_prefix + 'lib/libBuffers.a'},
-		]
+		source_root = target.package.path + 'source'
+		
+		library_path = build static_library: "Buffers", source_files: source_root.glob('Buffers/**/*.cpp')
+		
+		append linkflags library_path
+		append header_search_paths source_root
 	end
 end
 
 define_target "buffers-tests" do |target|
-	target.build do |*arguments|
-		test_root = target.package.path + 'test'
-		
-		run tests: "Buffers", source_files: test_root.glob('Buffers/**/*.cpp'), arguments: arguments
-	end
-	
 	target.depends "Language/C++14", private: true
 	
 	target.depends "Library/UnitTest"
 	target.depends "Library/Buffers"
 	
-	target.provides "Test/Buffers"
+	target.provides "Test/Buffers" do |*arguments|
+		test_root = target.package.path + 'test'
+		
+		run tests: "Buffers", source_files: test_root.glob('Buffers/**/*.cpp'), arguments: arguments
+	end
 end
 
 # Configurations
