@@ -34,15 +34,15 @@ define_target 'buffers-library' do |target|
 end
 
 define_target "buffers-tests" do |target|
-	target.depends "Language/C++14", private: true
-	
 	target.depends "Library/UnitTest"
+	
+	target.depends "Language/C++14"
 	target.depends "Library/Buffers"
 	
 	target.provides "Test/Buffers" do |*arguments|
 		test_root = target.package.path + 'test'
 		
-		run tests: "Buffers", source_files: test_root.glob('Buffers/**/*.cpp'), arguments: arguments
+		run source_files: test_root.glob('Buffers/**/*.cpp'), arguments: arguments
 	end
 end
 
