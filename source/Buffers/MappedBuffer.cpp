@@ -25,7 +25,7 @@ namespace Buffers
 	MappedBuffer::~MappedBuffer()
 	{
 		if (munmap(_data, _length) == -1)
-			throw std::system_error(errno, std::system_category(), "munmap");
+			perror(__PRETTY_FUNCTION__);
 	}
 	
 	void MappedBuffer::advise(int advice)

@@ -31,9 +31,8 @@ namespace Buffers
 	File::~File()
 	{
 		if (_descriptor > 0) {
-			// This is a bad situation to be in:
-			if (close(_descriptor) == -1)
-				throw std::system_error(errno, std::system_category(), "close");
+			if (close(_descriptor))
+				perror(__PRETTY_FUNCTION__);
 		}
 	}
 	
