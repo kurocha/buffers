@@ -18,7 +18,7 @@ namespace Buffers
 		
 		if (result == MAP_FAILED)
 			throw std::system_error(errno, std::system_category(), "mmap");
-
+		
 		_data = static_cast<Byte*>(result);
 	}
 	
